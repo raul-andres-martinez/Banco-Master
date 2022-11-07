@@ -11,8 +11,11 @@ Endpoints:
 Customer
 
 /api/Cliente/CadastrarCliente - Cadastrar novos clientes;
+
 /api/Cliente - Consultar todos clientes cadastrados;
+
 /api/Cliente/ConsultarCliente/CPF/{cpf} - Consulta cliente por CPF.
+
 /api/Cliente/ConsultarCliente/PIX/{PIX} - Consulta cliente pela chave PIX.
 
 Transfer
