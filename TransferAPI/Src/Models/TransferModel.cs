@@ -21,7 +21,7 @@ namespace TransferAPI.Src.Models
         public int Id { get; set; }
 
         [Required]
-        [ForeignKey("FK_ORIGEMPIX")]
+        [ForeignKey("ChavePixOrigemId")]
         public Customer ChavePixOrigem { get; set; }
 
         [Required]

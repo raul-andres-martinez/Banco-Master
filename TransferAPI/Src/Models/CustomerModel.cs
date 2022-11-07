@@ -29,6 +29,7 @@ namespace TransferAPI.Src.Models
         public string CPF { get; set; }
 
         [Required]
+        [JsonIgnore]
         [InverseProperty("ChavePixOrigem")]
         public string Pix { get; set; }
 

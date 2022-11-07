@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,16 @@ namespace TransferAPI.Src.Interfaces.Implements
         #region Atributos
 
         private readonly TransferContext _context;
+        private readonly ICustomer _customer;
 
         #endregion
 
         #region Construtores
 
-        public TransferImplement(TransferContext context)
+        public TransferImplement(TransferContext context, ICustomer customer)
         {
             _context = context;
+            _customer = customer;
         }
 
         #endregion
@@ -51,6 +54,8 @@ namespace TransferAPI.Src.Interfaces.Implements
 
             if (!DestinationPixExist(transfer.ChavePixDestino.Pix)) throw new Exception("Chave PIX não cadastrada");
 
+            if(transfer.ChavePixOrigem.Pix == transfer.ChavePixDestino.Pix) throw new Exception("As chaves PIX não podem ser iguais");
+
             if (transfer.Valor <= 0) throw new Exception("O valor da transferência deve ser maior que 0");
 
             await _context.Transfers.AddAsync(
@@ -60,7 +65,7 @@ namespace TransferAPI.Src.Interfaces.Implements
                     ChavePixDestino = transfer.ChavePixDestino,
                     Valor = transfer.Valor,
 
-                });
+                });         
             await UpdateOriginBalanceAsync(transfer.ChavePixOrigem.Pix, transfer.Valor);
             await UpdateDestinationBalanceAsync(transfer.ChavePixDestino.Pix, transfer.Valor);
             await _context.SaveChangesAsync();
