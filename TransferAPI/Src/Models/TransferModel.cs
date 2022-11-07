@@ -8,6 +8,12 @@ namespace TransferAPI.Src.Models
     [Table("TB_TRANSFER")]
     public class Transfer
     {
+        /// <summary>
+        /// <para>Resumo: Classe responsavel pela tabela de Transferência no banco de dados.</para>
+        /// <para>Criado por: Raul</para>
+        /// <para>Versão: 1.0</para>
+        /// <para>Data: 02/11/2022</para>
+        /// </summary>
         #region Atributos
 
         [Key]
@@ -16,14 +22,14 @@ namespace TransferAPI.Src.Models
 
         [Required]
         [ForeignKey("FK_ORIGEMPIX")]
-        public Cliente ChavePixOrigem { get; set; }
+        public Customer ChavePixOrigem { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public float Valor { get; set; }
 
         [Required]
-        [ForeignKey("FK_DESTINOPIX")]
-        public Cliente ChavePixDestino { get; set; }
+        public Customer ChavePixDestino { get; set; }
 
         #endregion
 

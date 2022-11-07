@@ -52,7 +52,7 @@ namespace TransferAPI
 
 
             //Repo
-            services.AddScoped<ICliente, ClienteImplement>();
+            services.AddScoped<ICustomer, CustomerImplement>();
             services.AddScoped<ITransfer, TransferImplement>();
 
             //Controladores
@@ -70,32 +70,32 @@ namespace TransferAPI
                 s.SwaggerDoc("v1", new OpenApiInfo { Title = "Banco Master API", Version = "v1" });
 
 
-                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "JWT authorization header utiliza: Bearer + JWT Token",
-                }
-            );
-                s.AddSecurityRequirement(
-                    new OpenApiSecurityRequirement
-                    {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new List<string>()
-                }
-                    }
-                );
+                //s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                //{
+                //    Name = "Authorization",
+                //    Type = SecuritySchemeType.ApiKey,
+                //    Scheme = "Bearer",
+                //    BearerFormat = "JWT",
+                //    In = ParameterLocation.Header,
+                //    Description = "JWT authorization header utiliza: Bearer + JWT Token",
+                //}
+            //);
+                //s.AddSecurityRequirement(
+                //    new OpenApiSecurityRequirement
+                //    {
+                //{
+                //    new OpenApiSecurityScheme
+                //    {
+                //        Reference = new OpenApiReference
+                //        {
+                //            Type = ReferenceType.SecurityScheme,
+                //            Id = "Bearer"
+                //        }
+                //    },
+                //    new List<string>()
+                //}
+                //    }
+                //);
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 s.IncludeXmlComments(xmlPath);

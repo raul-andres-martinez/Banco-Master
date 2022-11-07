@@ -10,11 +10,11 @@ using TransferAPI.Src.Models;
 namespace TransferAPI.Src.Implements
 {
     /// <summary>
-    /// <para>Resumo: Classe responsavel por implementar ICliente</para>
+    /// <para>Resumo: Classe responsavel por implementar ICustomer</para>
     /// <para>Criado por: Raul</para>
     /// <para>Versão: 1.0</para>
     /// </summary>
-    public class ClienteImplement : ICliente
+    public class CustomerImplement : ICustomer
     {
         #region Atributos
 
@@ -24,7 +24,7 @@ namespace TransferAPI.Src.Implements
 
         #region Construtores
 
-        public ClienteImplement(TransferContext context)
+        public CustomerImplement(TransferContext context)
         {
             _context = context;
         }
@@ -34,15 +34,16 @@ namespace TransferAPI.Src.Implements
         /// <summary>
         /// <para>Resumo: Método assíncrono para adicionar um novo cliente</para>
         /// </summary>
-        /// <param name="cliente">Construtor para cadastrar cliente</param>       
-        public async Task NewClienteAsync(Cliente cliente)
+        /// <param name="customer">Construtor para cadastrar cliente</param>       
+        public async Task NewCustomerAsync(Customer customer)
         {
-            await _context.Clientes.AddAsync(
-                new Cliente
+            await _context.Customers.AddAsync(
+                new Customer
                 {
-                    Nome = cliente.Nome,
-                    CPF = cliente.CPF,
-                    Pix = cliente.Pix,
+                    Nome = customer.Nome,
+                    CPF = customer.CPF,
+                    Pix = customer.Pix,
+                    Saldo = customer.Saldo,
                 });
             await _context.SaveChangesAsync();
         }
@@ -50,9 +51,9 @@ namespace TransferAPI.Src.Implements
         /// <summary>
         /// <para>Resumo: Método assíncrono para consultar todos clientes</para>
         /// </summary>
-        public async Task<List<Cliente>> GetAllClientesAsync()
+        public async Task<List<Customer>> GetAllCustomersAsync()
         {
-            return await _context.Clientes.ToListAsync();
+            return await _context.Customers.ToListAsync();
         }
 
         /// <summary>
@@ -60,10 +61,10 @@ namespace TransferAPI.Src.Implements
         ///CPF</para>
         /// </summary>
         /// <param name="cpf">CPF do usuario</param>
-        /// <return>UserModel</return>
-        public async Task<Cliente> GetClienteByCPFAsync(string cpf)
+        /// <return>CustomerModel</return>
+        public async Task<Customer> GetCustomerByCPFAsync(string cpf)
         {
-            return await _context.Clientes.FirstOrDefaultAsync(c => c.CPF == cpf);
+            return await _context.Customers.FirstOrDefaultAsync(c => c.CPF == cpf);
         }
 
         /// <summary>
@@ -71,10 +72,10 @@ namespace TransferAPI.Src.Implements
         ///PIX</para>
         /// </summary>
         /// <param name="pix">CPF do usuario</param>
-        /// <return>UserModel</return>
-        public async Task<Cliente> GetClienteByPIXAsync(string pix)
+        /// <return>CustomerModel</return>
+        public async Task<Customer> GetCustomerByPIXAsync(string pix)
         {
-            return await _context.Clientes.FirstOrDefaultAsync(c => c.Pix == pix);
+            return await _context.Customers.FirstOrDefaultAsync(c => c.Pix == pix);
         }
     }
 }

@@ -6,14 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TransferAPI.Src.Models
 {
     /// <summary>
-    /// <para>Resumo: Classe responsavel pela tabela Clientes no banco de dados.</para>
+    /// <para>Resumo: Classe responsavel pela tabela Clientes no banco de dados, adotei como documento padrão o CPF, por ser único para cada cidadão brasileiro.</para>
     /// <para>Criado por: Raul</para>
     /// <para>Versão: 1.0</para>
     /// <para>Data: 01/11/2022</para>
     /// </summary>
 
     [Table("TB_CLIENTES")]
-    public class Cliente
+    public class Customer
     {
         #region Atributos
 
@@ -29,7 +29,11 @@ namespace TransferAPI.Src.Models
         public string CPF { get; set; }
 
         [Required]
+        [InverseProperty("ChavePixOrigem")]
         public string Pix { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public float Saldo { get; set; }
 
         #endregion Atributos
     }

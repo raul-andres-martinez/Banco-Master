@@ -12,13 +12,12 @@ namespace TransferAPI.Src.Interfaces
     /// <para>Versão: 1.0</para>
     /// <para>Data: 01/11/2022</para>
     /// </summary>
-    public interface ICliente
+    public interface ICustomer
     {
-        Task NewClienteAsync(Cliente cliente);
-        Task<List<Cliente>> GetAllClientesAsync();
-        Task<Cliente> GetClienteByCPFAsync(string cpf);
-
-        Task<Cliente> GetClienteByPIXAsync(string pix);
+        Task NewCustomerAsync(Customer customer);
+        Task<List<Customer>> GetAllCustomersAsync();
+        Task<Customer> GetCustomerByCPFAsync(string cpf);
+        Task<Customer> GetCustomerByPIXAsync(string pix);
     }
 }
 

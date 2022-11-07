@@ -12,18 +12,18 @@ namespace TransferAPI.Src.Controllers
     [ApiController]
     [Route("api/Cliente")]
     [Produces("application/json")]
-    public class ClienteController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         #region Atributos
 
-        private readonly ICliente _repo;
+        private readonly ICustomer _repo;
         private readonly IAuthentication _services;
 
         #endregion
 
         #region Construtores
 
-        public ClienteController(ICliente repo, IAuthentication services)
+        public CustomerController(ICustomer repo, IAuthentication services)
         {
             _repo = repo;
             _services = services;
@@ -36,30 +36,31 @@ namespace TransferAPI.Src.Controllers
         /// <summary>
         /// Cadastrar cliente
         /// </summary>
-        /// <param name="cliente">Contrutor para cadastrar cliente</param>
+        /// <param name="customer">Contrutor para cadastrar cliente. Para testar todas funções, criar 2 clientes</param>
         /// <returns>ActionResult</returns>
         /// <remarks>
         /// Exemplo de requisição:
         ///
-        /// POST /api/Cliente/CadastrarCliente
-        /// {
-        /// "Nome": "Fulano",
-        /// "CPF": "123.456.789-10 (Escrever com "." e "-")",
-        /// "Pix": "123abc"
-        /// }
+        ///     POST /api/Cliente/CadastrarCliente
+        ///     {
+        ///         "Nome": "Fulano",
+        ///         "CPF": "123.456.789-10"  (Escrever com "." e "-"),
+        ///         "Pix": "123abc",
+        ///         "Saldo": 120.00
+        ///     }
         ///
         /// </remarks>
         /// <response code="201">Retorna cliente criado</response>
         /// <response code="401">CPF ou PIX já cadastrado</response>
 
         [HttpPost("CadastrarCliente")]
-        public async Task<ActionResult> NewClienteAsync([FromBody] Cliente cliente)
+        public async Task<ActionResult> NewCustomerAsync([FromBody] Customer customer)
         {
             try
             {
-                await _services.NoDuplicateCPFPIX(cliente);
+                await _services.NoDuplicateCPFPIX(customer);
 
-                return Created($"api/Clientes/{cliente.Nome}", cliente);
+                return Created($"api/Clientes/{customer.CPF}", customer);
             }
             catch (Exception ex)
             {
@@ -67,7 +68,6 @@ namespace TransferAPI.Src.Controllers
             }
 
         }
-
 
         /// <summary>
         /// Consultar todos clientes
@@ -77,9 +77,9 @@ namespace TransferAPI.Src.Controllers
         /// <response code="200">Retorna todos clientes</response>
         /// <response code="204">Sem clientes cadastrados</response>
         [HttpGet]
-        public async Task<ActionResult> GetAllClientesAsync()
+        public async Task<ActionResult> GetAllCustomersAsync()
         {
-            var list = await _repo.GetAllClientesAsync();
+            var list = await _repo.GetAllCustomersAsync();
             if (list.Count < 1) return NoContent();
             return Ok(list);
         }
@@ -91,14 +91,31 @@ namespace TransferAPI.Src.Controllers
         /// <return>Cliente</return>
         /// <response code="200">Retorna cliente</response>
         /// <response code="204">CPF não encontrado</response>
-        [HttpGet("ConsultarCliente/{cpf}")]
-        public async Task<ActionResult> GetClienteByCPFAsync([FromRoute] string cpf)
+        [HttpGet("ConsultarCliente/CPF/{cpf}")]
+        public async Task<ActionResult> GetCustomerByCPFAsync([FromRoute] string cpf)
         {
-            var cliente = await _repo.GetClienteByCPFAsync(cpf);
+            var customer = await _repo.GetCustomerByCPFAsync(cpf);
 
-            if (cliente == null) return NotFound(new { Message = "CPF não encontrado no sistema" });
+            if (customer == null) return NotFound(new { Message = "CPF não encontrado no sistema" });
 
-            return Ok(cliente);
+            return Ok(customer);
+        }
+
+        /// <summary>
+        /// Consultar cliente pela chave PIX
+        /// </summary>
+        /// <param name="pix">PIX do cliente</param>
+        /// <return>Cliente</return>
+        /// <response code="200">Retorna cliente</response>
+        /// <response code="204">PIX não encontrado</response>
+        [HttpGet("ConsultarCliente/PIX/{pix}")]
+        public async Task<ActionResult> GetCustomerByPIXAsync([FromRoute] string pix)
+        {
+            var customer = await _repo.GetCustomerByPIXAsync(pix);
+
+            if (customer == null) return NotFound(new { Message = "PIX não encontrado no sistema" });
+
+            return Ok(customer);
         }
 
         #endregion
