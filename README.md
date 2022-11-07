@@ -18,6 +18,7 @@ Customer
 Transfer
 
 /api/Transferencia - Carregar extrato da chave pix; (O método pelo swagger retorna com o ID do pix de origem e destino como null, mas funciona corretamente no banco de dados)
+
 /api/Transferencia/TransferirPix - Iniciar nova transferência por chave PIX. (Quando executado gera uma cópia dos usuários antes de atualizar o valor da transfêrencia,
 isso é um feature não intencional porém não afeta a execução da API.)
 
