@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace TransferAPI.Src.Implements
         /// <param name="customer">Construtor para cadastrar cliente</param>       
         public async Task NewCustomerAsync(Customer customer)
         {
+            if (customer.Saldo < 0) throw new Exception("O saldo não pode ser negativo");
             await _context.Customers.AddAsync(
                 new Customer
                 {
