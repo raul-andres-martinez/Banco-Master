@@ -50,6 +50,7 @@ namespace TransferAPI.Src.Interfaces.Implements
         /// <return>CustomerModel</return>
         public async Task NewTransferAsync(Transfer transfer)
         {
+
             if (!OriginPixExist(transfer.ChavePixOrigem.Pix)) throw new Exception("Chave PIX não cadastrada");
 
             if (!DestinationPixExist(transfer.ChavePixDestino.Pix)) throw new Exception("Chave PIX não cadastrada");
@@ -58,11 +59,14 @@ namespace TransferAPI.Src.Interfaces.Implements
 
             if (transfer.Valor <= 0) throw new Exception("O valor da transferência deve ser maior que 0");
 
+            Customer chavePixOrigem = await _customer.GetCustomerByPIXAsync(transfer.ChavePixOrigem.Pix);
+            Customer chavePixDestino = await _customer.GetCustomerByPIXAsync(transfer.ChavePixOrigem.Pix);
+
             await _context.Transfers.AddAsync(
                 new Transfer
                 {
-                    ChavePixOrigem = transfer.ChavePixOrigem,
-                    ChavePixDestino = transfer.ChavePixDestino,
+                    ChavePixOrigem = chavePixOrigem,
+                    ChavePixDestino = chavePixDestino,
                     Valor = transfer.Valor,
 
                 });         
